@@ -33,7 +33,6 @@ const JoinPage = () => {
 
   const handleSendUser = () => {
     user = document.getElementById("input").value;
-    console.log(user);
   };
 
   return (

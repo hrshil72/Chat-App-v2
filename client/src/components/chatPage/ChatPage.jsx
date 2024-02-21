@@ -10,6 +10,24 @@ const ChatPage = () => {
     socket.on("connect", () => {
       // alert("Connected");
     });
+
+    socket.emit("joined", { user });
+
+    socket.on("welcome", (data) => {
+      console.log(data.user, data.message);
+    });
+    socket.on("userJoined", (data) => {
+      console.log(data.user, data.message);
+    });
+
+    socket.on("leave", (data) => {
+      console.log(data.message);
+    });
+
+    return () => {
+      socket.emit(`disconnect`);
+      socket.off();
+    };
   }, []);
 
   return (
