@@ -24,7 +24,6 @@ const ChatPage = () => {
     socket = io("http://localhost:8000/", { transports: ["websocket"] });
 
     socket.on("connect", () => {
-      alert("Connected");
       setId(socket.id);
     });
 
