@@ -18,8 +18,6 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("New connection");
-
   socket.on("joined", ({ user }) => {
     users[socket.id] = user;
     socket.emit("welcome", {
@@ -32,7 +30,7 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("message", ({message, id}) => {
+  socket.on("message", ({ message, id }) => {
     io.emit("sendMessage", { user: users[id], message, id });
   });
 
@@ -41,7 +39,6 @@ io.on("connection", (socket) => {
       user: "Admin",
       message: `${users[socket.id]} has left`,
     });
-    console.log(`disconnected`);
   });
 });
 

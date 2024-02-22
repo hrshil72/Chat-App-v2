@@ -4,6 +4,8 @@ import { io } from "socket.io-client";
 import send from "../../assets/send.png";
 import Chat from "../chat/Chat";
 import ReactScrollToBottom from "react-scroll-to-bottom";
+import closeChat from "../../assets/closeIcon.png";
+import { Link } from "react-router-dom";
 
 let socket;
 
@@ -18,12 +20,11 @@ const ChatPage = () => {
     document.getElementById("chatInput").value = "";
   };
 
-  console.log(message);
   useEffect(() => {
     socket = io("http://localhost:8000/", { transports: ["websocket"] });
 
     socket.on("connect", () => {
-      // alert("Connected");
+      alert("Connected");
       setId(socket.id);
     });
 
@@ -31,17 +32,14 @@ const ChatPage = () => {
 
     socket.on("welcome", (data) => {
       setMessage([...message, data]);
-      console.log(data.user, data.message);
     });
 
     socket.on("userJoined", (data) => {
       setMessage([...message, data]);
-      console.log(data.user, data.message);
     });
 
     socket.on("leave", (data) => {
       setMessage([...message, data]);
-      console.log(data.message);
     });
 
     return () => {
@@ -53,7 +51,6 @@ const ChatPage = () => {
   useEffect(() => {
     socket.on("sendMessage", (data) => {
       setMessage([...message, data]);
-      console.log(data.user, data.message, data.id);
     });
 
     return () => {
@@ -64,7 +61,12 @@ const ChatPage = () => {
   return (
     <div className="chatPage">
       <div className="chatContainer">
-        <div className="header"></div>
+        <div className="header">
+          <h2>Lets Chat</h2>
+          <a href="/">
+            <img src={closeChat} />
+          </a>
+        </div>
         <ReactScrollToBottom className="chatBox">
           {message.map((item, index) => {
             return (
@@ -78,7 +80,11 @@ const ChatPage = () => {
           })}
         </ReactScrollToBottom>
         <div className="inputBox">
-          <input type="text" id="chatInput" />
+          <input
+            onKeyPress={(e) => (e.key === "Enter" ? sendMessage() : null)}
+            type="text"
+            id="chatInput"
+          />
           <button onClick={sendMessage} className="sendBtn">
             <img src={send} />
           </button>
