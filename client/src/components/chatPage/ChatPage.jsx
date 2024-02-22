@@ -21,7 +21,9 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
-    socket = io("http://localhost:8000/", { transports: ["websocket"] });
+    socket = io("https://chat-app-v2-2c59.onrender.com", {
+      transports: ["websocket"],
+    });
 
     socket.on("connect", () => {
       setId(socket.id);
